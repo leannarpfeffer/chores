@@ -71,9 +71,9 @@
 
     <script>
         const dailyChores = [
-            "Feed the dog and cat",
-            "Walk the dog (twice a day)",
-            "Clean the cat's litter box",
+            "Feed pets",
+            "Walk Ace",
+            "Clean litter box",
             "Wipe down kitchen counters",
             "Wash dishes or load the dishwasher",
             "Take out the trash",
@@ -94,7 +94,7 @@
             "Water houseplants",
             "Clean out the refrigerator of expired items",
             "Wipe down kitchen appliances",
-            "Grocery shopping (Sunday only)"
+            "Grocery shopping"
         ];
 
         const today = new Date();
@@ -120,7 +120,7 @@
 
         // Distribute weekly chores, ensuring grocery shopping is only on Sunday
         weeklyChores.forEach((chore, index) => {
-            if (chore === "Grocery shopping (Sunday only)" && day !== 0) {
+            if (chore === "Grocery shopping" && day !== 0) {
                 return; // Skip if not Sunday
             }
             if ((index + day) % 2 === 0) {
