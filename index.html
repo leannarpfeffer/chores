@@ -71,15 +71,16 @@
 
     <script>
         const dailyChores = [
-            "Cook Dinner",
-            "Walk Ace",
-            "Clean litter box",
+            "Feed the dog and cat",
+            "Walk the dog (twice a day)",
+            "Clean the cat's litter box",
             "Wipe down kitchen counters",
             "Wash dishes or load the dishwasher",
             "Take out the trash",
             "Sweep/vacuum common areas",
             "Make the bed",
-            "Wipe down bathroom surfaces"
+            "Wipe down bathroom surfaces",
+            "Cook dinner"
         ];
 
         const weeklyChores = [
@@ -88,11 +89,12 @@
             "Mop floors",
             "Dust furniture and surfaces",
             "Clean mirrors and glass surfaces",
-            "Order Groceries",
+            "Do laundry (wash, dry, fold, and put away)",
             "Change bed linens",
             "Water houseplants",
             "Clean out the refrigerator of expired items",
-            "Wipe down kitchen appliances"
+            "Wipe down kitchen appliances",
+            "Grocery shopping (Sunday only)"
         ];
 
         const today = new Date();
@@ -101,15 +103,26 @@
         const alexChores = [];
         const leannaChores = [];
 
+        // Distribute daily chores, with a 70% chance for Leanna to cook dinner
         dailyChores.forEach((chore, index) => {
-            if ((index + day) % 2 === 0) {
+            if (chore === "Cook dinner") {
+                if (Math.random() < 0.7) {
+                    leannaChores.push(chore);
+                } else {
+                    alexChores.push(chore);
+                }
+            } else if ((index + day) % 2 === 0) {
                 alexChores.push(chore);
             } else {
                 leannaChores.push(chore);
             }
         });
 
+        // Distribute weekly chores, ensuring grocery shopping is only on Sunday
         weeklyChores.forEach((chore, index) => {
+            if (chore === "Grocery shopping (Sunday only)" && day !== 0) {
+                return; // Skip if not Sunday
+            }
             if ((index + day) % 2 === 0) {
                 alexChores.push(chore);
             } else {
