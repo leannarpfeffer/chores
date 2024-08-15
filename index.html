@@ -1,0 +1,164 @@
+<!DOCTYPE html>p
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Chore List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        .chore-list {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #16a085;
+            font-size: 1.75em;
+            margin-bottom: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            background: #ecf0f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        ul li.completed {
+            text-decoration: line-through;
+            color: #999;
+            background: #bdc3c7;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daily Chore List</h1>
+    <div class="chore-list">
+        <h2>Alex's Chores</h2>
+        <ul id="alex-chores">
+            <!-- Chores will be inserted here -->
+        </ul>
+    </div>
+    <div class="chore-list">
+        <h2>Leanna's Chores</h2>
+        <ul id="leanna-chores">
+            <!-- Chores will be inserted here -->
+        </ul>
+    </div>
+
+    <script>
+        const dailyChores = [
+            "Feed the dog and cat",
+            "Walk the dog (twice a day)",
+            "Clean the cat's litter box",
+            "Wipe down kitchen counters",
+            "Wash dishes or load the dishwasher",
+            "Take out the trash",
+            "Sweep/vacuum common areas",
+            "Make the bed",
+            "Wipe down bathroom surfaces"
+        ];
+
+        const weeklyChores = [
+            "Deep clean the bathroom (toilet, shower, sink)",
+            "Vacuum all carpets and rugs",
+            "Mop floors",
+            "Dust furniture and surfaces",
+            "Clean mirrors and glass surfaces",
+            "Do laundry (wash, dry, fold, and put away)",
+            "Change bed linens",
+            "Water houseplants",
+            "Clean out the refrigerator of expired items",
+            "Wipe down kitchen appliances"
+        ];
+
+        const today = new Date();
+        const day = today.getDay(); // 0 = Sunday, 1 = Monday, ...
+
+        const alexChores = [];
+        const leannaChores = [];
+
+        dailyChores.forEach((chore, index) => {
+            if ((index + day) % 2 === 0) {
+                alexChores.push(chore);
+            } else {
+                leannaChores.push(chore);
+            }
+        });
+
+        weeklyChores.forEach((chore, index) => {
+            if ((index + day) % 2 === 0) {
+                alexChores.push(chore);
+            } else {
+                leannaChores.push(chore);
+            }
+        });
+
+        const alexChoresElement = document.getElementById('alex-chores');
+        const leannaChoresElement = document.getElementById('leanna-chores');
+
+        function createChoreElement(chore, person, index) {
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+
+            // Generate a unique key for this specific chore
+            const choreKey = `${person}-chore-${index}-${day}`;
+
+            // Check if the chore was previously completed (stored in localStorage)
+            const storedStatus = localStorage.getItem(choreKey);
+            if (storedStatus === 'completed') {
+                checkbox.checked = true;
+                li.classList.add('completed');
+            }
+
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+                    li.classList.add('completed');
+                    localStorage.setItem(choreKey, 'completed');
+                } else {
+                    li.classList.remove('completed');
+                    localStorage.removeItem(choreKey);
+                }
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(chore));
+            return li;
+        }
+
+        alexChores.forEach((chore, index) => {
+            const li = createChoreElement(chore, 'alex', index);
+            alexChoresElement.appendChild(li);
+        });
+
+        leannaChores.forEach((chore, index) => {
+            const li = createChoreElement(chore, 'leanna', index);
+            leannaChoresElement.appendChild(li);
+        });
+    </script>
+</body>
+</html>
