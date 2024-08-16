@@ -71,9 +71,8 @@
 
     <script>
         const dailyChores = [
-            "Feed the dog and cat",
-            "Walk the dog (twice a day)",
-            "Clean the cat's litter box",
+            "Walk Ace",
+            "Clean litter box",
             "Wipe down kitchen counters",
             "Wash dishes or load the dishwasher",
             "Take out the trash",
@@ -94,7 +93,7 @@
             "Water houseplants",
             "Clean out the refrigerator of expired items",
             "Wipe down kitchen appliances",
-            "Grocery shopping (Sunday only)"
+            "Grocery shopping"
         ];
 
         const monthlyChores = [
@@ -132,7 +131,7 @@
         // Distribute weekly chores, ensuring they are only assigned once per week
         if (day === 0) { // Assuming chores are assigned on Sundays
             weeklyChores.forEach((chore, index) => {
-                if (chore === "Grocery shopping (Sunday only)" && day !== 0) {
+                if (chore === "Grocery shopping" && day !== 0) {
                     return; // Skip if not Sunday
                 }
                 if ((index + weekOfMonth) % 2 === 0) {
