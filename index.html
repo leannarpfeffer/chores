@@ -71,9 +71,9 @@
 
     <script>
         const dailyChores = [
-            "Feed pets",
-            "Walk Ace",
-            "Clean litter box",
+            "Feed the dog and cat",
+            "Walk the dog (twice a day)",
+            "Clean the cat's litter box",
             "Wipe down kitchen counters",
             "Wash dishes or load the dishwasher",
             "Take out the trash",
@@ -94,11 +94,22 @@
             "Water houseplants",
             "Clean out the refrigerator of expired items",
             "Wipe down kitchen appliances",
-            "Grocery shopping"
+            "Grocery shopping (Sunday only)"
+        ];
+
+        const monthlyChores = [
+            "Deep clean kitchen (including oven and microwave)",
+            "Clean under furniture and in hard-to-reach areas",
+            "Wash windows",
+            "Clean out closets and organize belongings",
+            "Change air filters (if applicable)",
+            "Deep clean pet areas (bedding, crates, toys)"
         ];
 
         const today = new Date();
         const day = today.getDay(); // 0 = Sunday, 1 = Monday, ...
+        const weekOfMonth = Math.ceil(today.getDate() / 7); // Determine the current week of the month
+        const month = today.getMonth(); // Get the current month (0 = January, 1 = February, ...)
 
         const alexChores = [];
         const leannaChores = [];
@@ -118,17 +129,30 @@
             }
         });
 
-        // Distribute weekly chores, ensuring grocery shopping is only on Sunday
-        weeklyChores.forEach((chore, index) => {
-            if (chore === "Grocery shopping" && day !== 0) {
-                return; // Skip if not Sunday
-            }
-            if ((index + day) % 2 === 0) {
-                alexChores.push(chore);
-            } else {
-                leannaChores.push(chore);
-            }
-        });
+        // Distribute weekly chores, ensuring they are only assigned once per week
+        if (day === 0) { // Assuming chores are assigned on Sundays
+            weeklyChores.forEach((chore, index) => {
+                if (chore === "Grocery shopping (Sunday only)" && day !== 0) {
+                    return; // Skip if not Sunday
+                }
+                if ((index + weekOfMonth) % 2 === 0) {
+                    alexChores.push(chore);
+                } else {
+                    leannaChores.push(chore);
+                }
+            });
+        }
+
+        // Distribute monthly chores, ensuring they are only assigned once per month
+        if (weekOfMonth === 1) { // Assign monthly chores during the first week of the month
+            monthlyChores.forEach((chore, index) => {
+                if ((index + month) % 2 === 0) {
+                    alexChores.push(chore);
+                } else {
+                    leannaChores.push(chore);
+                }
+            });
+        }
 
         const alexChoresElement = document.getElementById('alex-chores');
         const leannaChoresElement = document.getElementById('leanna-chores');
@@ -139,7 +163,7 @@
             checkbox.type = 'checkbox';
 
             // Generate a unique key for this specific chore
-            const choreKey = `${person}-chore-${index}-${day}`;
+            const choreKey = `${person}-chore-${index}-${day}-${weekOfMonth}-${month}`;
 
             // Check if the chore was previously completed (stored in localStorage)
             const storedStatus = localStorage.getItem(choreKey);
